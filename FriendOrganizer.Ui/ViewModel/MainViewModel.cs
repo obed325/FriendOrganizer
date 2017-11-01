@@ -1,9 +1,9 @@
 ﻿using FriendOrganizer.Model;
-using FriendOrganizer.Ui.Data;
+using FriendOrganizer.UI.Data;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace FriendOrganizer.Ui.ViewModel
+namespace FriendOrganizer.UI.ViewModel
 {
     public class MainViewModel: ViewModelBase
     {

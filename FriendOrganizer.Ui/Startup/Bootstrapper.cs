@@ -1,30 +1,30 @@
 ﻿using Autofac;
 using Prism.Events;
 using FriendOrganizer.DataAccess;
-using FriendOrganizer.Ui.Data;
-using FriendOrganizer.Ui.ViewModel;
+using FriendOrganizer.UI.Data;
+using FriendOrganizer.UI.ViewModel;
 
-namespace FriendOrganizer.Ui.Startup
+namespace FriendOrganizer.UI.Startup
 {
     public class Bootstrapper
     {
         public IContainer Bootstrap()
         {
-            var builder = new ContainerBuilder();
+            var Builder = new ContainerBuilder();
 
-            builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
+            Builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
 
-            builder.RegisterType<FriendOrganizerDbContext>().AsSelf();
+            Builder.RegisterType<FriendOrganizerDbContext>().AsSelf();
 
-            builder.RegisterType<MainWindow>().AsSelf();
-            builder.RegisterType<MainViewModel>().AsSelf();
-            builder.RegisterType<NavigationViewModel>().As<INavigationViewModel>();
-            builder.RegisterType<FriendDetailViewModel>().As<IFriendDetailViewModel>();
+            Builder.RegisterType<MainWindow>().AsSelf();
+            Builder.RegisterType<MainViewModel>().AsSelf();
+            Builder.RegisterType<NavigationViewModel>().As<INavigationViewModel>();
+            Builder.RegisterType<FriendDetailViewModel>().As<IFriendDetailViewModel>();
 
-            builder.RegisterType<LookupDataService>().AsImplementedInterfaces();
-            builder.RegisterType<FriendDataService>().As<IFriendDataService> ();
+            Builder.RegisterType<LookupDataService>().AsImplementedInterfaces();
+            Builder.RegisterType<FriendDataService>().As<IFriendDataService> ();
 
-            return builder.Build();
+            return Builder.Build();
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using FriendOrganizer.Ui.ViewModel;
+﻿using FriendOrganizer.UI.ViewModel;
 using System.Windows;
 
 
-namespace FriendOrganizer.Ui
+namespace FriendOrganizer.UI
 {
 
     public partial class MainWindow : Window

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FriendOrganizer.Model;
-using FriendOrganizer.Ui.Data;
+using FriendOrganizer.UI.Data;
 using System.Collections.ObjectModel;
 using Prism.Events;
-using FriendOrganizer.Ui.Event;
+using FriendOrganizer.UI.Event;
 
-namespace FriendOrganizer.Ui.ViewModel
+namespace FriendOrganizer.UI.ViewModel
 {
     public class NavigationViewModel : ViewModelBase, INavigationViewModel
     {

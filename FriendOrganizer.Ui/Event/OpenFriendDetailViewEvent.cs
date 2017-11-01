@@ -1,7 +1,7 @@
 ﻿using Prism.Events;
 
 
-namespace FriendOrganizer.Ui.Event
+namespace FriendOrganizer.UI.Event
 {
     public class OpenFriendDetailViewEvent : PubSubEvent<int>
     {

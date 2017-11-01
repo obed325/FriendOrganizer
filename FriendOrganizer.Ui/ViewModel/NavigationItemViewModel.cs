@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FriendOrganizer.Ui.ViewModel
+namespace FriendOrganizer.UI.ViewModel
 {
     public class NavigationItemViewModel : ViewModelBase
     {

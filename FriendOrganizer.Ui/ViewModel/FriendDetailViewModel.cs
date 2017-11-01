@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FriendOrganizer.Model;
-using FriendOrganizer.Ui.Data;
+using FriendOrganizer.UI.Data;
 using FriendOrganizer.DataAccess;
-using FriendOrganizer.Ui.ViewModel;
+using FriendOrganizer.UI.ViewModel;
 using Prism.Events;
-using FriendOrganizer.Ui.Event;
+using FriendOrganizer.UI.Event;
 using System.Windows.Input;
 using Prism.Commands;
-using FriendOrganizer.Ui.Wrapper;
+using FriendOrganizer.UI.Wrapper;
 
-namespace FriendOrganizer.Ui.Data
+namespace FriendOrganizer.UI.Data
 {
     public class FriendDetailViewModel : ViewModelBase, IFriendDetailViewModel
     {
@@ -52,7 +52,7 @@ namespace FriendOrganizer.Ui.Data
 
         private async void OnSaveExecute()
         {
-            await _dataService.SaveAsync(Friend.Model);
+            await _dataService.SaveAsync(Friend.Model); //.Model ?
             _eventAggregator.GetEvent<AfterFriendSavedEvent>().Publish(
                 new AfterFriendSavedEventArgs
                 {
@@ -63,7 +63,8 @@ namespace FriendOrganizer.Ui.Data
 
         private bool OnSaveCanExecute()
         {
-            throw new NotImplementedException();
+            //Todo: Check if friends is valid
+            return true;
         }
 
         private async void OnOpenFriendDetailView(int friendId)

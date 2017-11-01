@@ -1,10 +1,10 @@
-﻿using FriendOrganizer.Ui.Data;
+﻿using FriendOrganizer.UI.Data;
 using Autofac;
 using System.Windows;
-using FriendOrganizer.Ui.Startup;
+using FriendOrganizer.UI.Startup;
 using System;
 
-namespace FriendOrganizer.Ui
+namespace FriendOrganizer.UI
 {
     /// <summary>
     /// Interaction logic for App.xaml

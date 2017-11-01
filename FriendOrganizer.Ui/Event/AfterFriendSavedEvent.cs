@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 
 
-namespace FriendOrganizer.Ui.Event
+namespace FriendOrganizer.UI.Event
 {
-    public class AfterFriendSavedEvent :PubSubEvent<AfterFriendSavedEventArgs>
+    public class AfterFriendSavedEvent : PubSubEvent<AfterFriendSavedEventArgs>
     {
 
     }

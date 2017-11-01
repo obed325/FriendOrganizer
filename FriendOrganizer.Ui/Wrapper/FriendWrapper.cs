@@ -1,4 +1,4 @@
-﻿using FriendOrganizer.Ui.ViewModel;
+﻿using FriendOrganizer.UI.ViewModel;
 using FriendOrganizer.Model;
 using System;
 using System.Collections.Generic;
@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Collections;
 
-namespace FriendOrganizer.Ui.Wrapper
+namespace FriendOrganizer.UI.Wrapper
 {
-    public class FriendWrapper : ViewModelBase, INotifyDataErrorInfo
+    public class FriendWrapper : NotifyDataErrorInfoBase
     {
         public FriendWrapper(Friend model)
         {
@@ -28,6 +28,21 @@ namespace FriendOrganizer.Ui.Wrapper
             {
                 Model.FirstName = value;
                 OnPropertyChanged();
+                ValidateProperty(nameof(FirstName));
+            }
+        }
+
+        private void ValidateProperty(string propertyName)
+        {
+            ClearErrors(propertyName);
+            switch(propertyName)
+            {
+                case nameof(FirstName):
+                    if(string.Equals(FirstName, "Robot", StringComparison.OrdinalIgnoreCase))
+                    {
+                        AddError(propertyName, "Robots are not valid friends");
+                    }
+                    break;
             }
         }
 
@@ -41,12 +56,7 @@ namespace FriendOrganizer.Ui.Wrapper
             }
         }
 
-        private Dictionary<string, List<string>> _errorsByPropertyName
-            = new Dictionary<string, List<string>>();
-
-        public bool HasErrors => _errorsByPropertyName.Any();
-
-        private string Email
+        public string Email
         {
             get { return Model.Email; }
             set
@@ -55,6 +65,14 @@ namespace FriendOrganizer.Ui.Wrapper
                 OnPropertyChanged();
             }
         }
+
+    }
+    public class NotifyDataErrorInfoBase:ViewModelBase,INotifyDataErrorInfo
+    {
+        private Dictionary<string, List<string>> _errorsByPropertyName
+        = new Dictionary<string, List<string>>();
+
+        public bool HasErrors => _errorsByPropertyName.Any();
 
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
@@ -65,12 +83,12 @@ namespace FriendOrganizer.Ui.Wrapper
                 : null;
         }
 
-        private void OnErrorsChanged(string propertyName)
+        protected virtual void OnErrorsChanged(string propertyName)
         {
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
 
-        private void AddError(string propertyName,string error)
+        protected void AddError(string propertyName, string error)
         {
             if (!_errorsByPropertyName.ContainsKey(propertyName))
             {
@@ -83,7 +101,7 @@ namespace FriendOrganizer.Ui.Wrapper
             }
         }
 
-        private void ClearErrors(string propertyName)
+        protected void ClearErrors(string propertyName)
         {
             if (_errorsByPropertyName.ContainsKey(propertyName))
             {

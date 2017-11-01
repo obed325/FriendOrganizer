@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace FriendOrganizer.Ui.Data
+namespace FriendOrganizer.UI.Data
 {
     public interface IFriendDetailViewModel
     {
