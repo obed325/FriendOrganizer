@@ -37,6 +37,14 @@ namespace FriendOrganizer.Ui.Data
             var friend = await _dataService.GetByIdAsync(friendId);
 
             Friend = new FriendWrapper(friend);
+            Friend.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(Friend.HasErrors))
+                {
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
+            };
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
         }
 
         public FriendWrapper Friend
@@ -63,7 +71,8 @@ namespace FriendOrganizer.Ui.Data
 
         private bool OnSaveCanExecute()
         {
-            throw new NotImplementedException();
+            // Todo: check in addition if friend has changes
+            return Friend!=null && !Friend.HasErrors;
         }
 
         private async void OnOpenFriendDetailView(int friendId)
