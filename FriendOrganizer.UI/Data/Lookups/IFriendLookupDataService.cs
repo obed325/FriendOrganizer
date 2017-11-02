@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using FriendOrganizer.Model;
 
-namespace FriendOrganizer.Ui.Data
+namespace FriendOrganizer.Ui.Data.Lookups
 {
     public interface IFriendLookupDataService
     {
