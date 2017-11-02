@@ -12,6 +12,7 @@ using FriendOrganizer.Ui.Event;
 using System.Windows.Input;
 using Prism.Commands;
 using FriendOrganizer.Ui.Wrapper;
+using FriendOrganizer.Ui.View.Services;
 
 namespace FriendOrganizer.Ui.Data
 {
@@ -19,17 +20,33 @@ namespace FriendOrganizer.Ui.Data
     {
         private IFriendRepository _friendRepository;
         private IEventAggregator _eventAggregator;
+        private IMessageDialogService _messageDialogService;
         private FriendWrapper _friend;
         private bool _hasChanges;
 
         public FriendDetailViewModel(IFriendRepository friendRepository,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator, 
+            IMessageDialogService messageDialogService)
         {
             _friendRepository = friendRepository;
             _eventAggregator = eventAggregator;
+            _messageDialogService = messageDialogService;//field
             
 
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
+            DeleteCommand = new DelegateCommand(OnDeleteExecute);
+        }
+
+        private async void OnDeleteExecute()
+        {
+            var result = _messageDialogService.ShowOkCancelDialog($"Do you really want to delete the friend {Friend.FirstName} {Friend.LastName}?",
+                "Question");
+            if (result == MessageDialogResult.OK)
+            {
+                _friendRepository.Remove(Friend.Model);
+                await _friendRepository.SaveAsync();
+                _eventAggregator.GetEvent<AfterFriendDeletedEvent>().Publish(Friend.Id);
+            }
         }
 
         public async Task LoadAsync(int? friendId)
@@ -51,6 +68,11 @@ namespace FriendOrganizer.Ui.Data
                 }
             };
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            if (Friend.Id == 0)
+            {
+                //Little trick to trigger validation
+                Friend.FirstName = "";
+            }
         }
 
         public FriendWrapper Friend
@@ -79,6 +101,8 @@ namespace FriendOrganizer.Ui.Data
 
 
         public ICommand SaveCommand { get; }
+
+        public ICommand DeleteCommand { get; }
 
         private async void OnSaveExecute()
         {
