@@ -3,7 +3,7 @@
 
 namespace FriendOrganizer.Ui.Event
 {
-    public class OpenFriendDetailViewEvent : PubSubEvent<int>
+    public class OpenFriendDetailViewEvent : PubSubEvent<int?>
     {
 
     }

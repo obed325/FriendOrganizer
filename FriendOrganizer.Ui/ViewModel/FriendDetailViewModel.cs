@@ -32,9 +32,11 @@ namespace FriendOrganizer.Ui.Data
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
         }
 
-        public async Task LoadAsync(int friendId)
+        public async Task LoadAsync(int? friendId)
         {
-            var friend = await _friendRepository.GetByIdAsync(friendId);
+            var friend = friendId.HasValue
+                ? await _friendRepository.GetByIdAsync(friendId.Value)
+                : CreateNewFriend();
 
             Friend = new FriendWrapper(friend);
             Friend.PropertyChanged += (s, e) =>
@@ -93,6 +95,12 @@ namespace FriendOrganizer.Ui.Data
         private bool OnSaveCanExecute()
         {
             return Friend!=null && !Friend.HasErrors && HasChanges;
+        }
+        private Friend CreateNewFriend()
+        {
+            var friend = new Friend();
+            _friendRepository.Add(friend);
+            return friend;
         }
     }
 }

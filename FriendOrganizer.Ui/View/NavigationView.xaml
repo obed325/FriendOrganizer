@@ -20,13 +20,13 @@
                     <DataTemplate>
                         <Button Content="{Binding DisplayMember}"
                             Command="{Binding OpenFriendDetailViewComman}">
-                            <Button.Tempelate>
-                                <ControlTempelate TargetType="Button">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
                                 <Grid x:Name="grid">
-                                        <ContentPresenter HorizontalAlignment="{TempelateBinding HorizontalContentAlignment}"/>
+                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
 
                                     </Grid>
-                              <ControlTempelate.Triggers>
+                              <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter Property="Cursor" Value="Hand"/>
                                     <Setter Property="FontWeight" Value="Bold"/>
@@ -34,9 +34,9 @@
                                <Trigger Property="IsPressed" Value="True">
                                   <Setter Property="FontWeight" Value="Normal"/>
                                </Trigger>
-                              </ControlTempelate.Triggers>
-                            </ControlTempelate>
-                            </Button.Tempelate>
+                              </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                            </Button.Template>
                         </Button>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

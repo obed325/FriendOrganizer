@@ -28,8 +28,16 @@ namespace FriendOrganizer.Ui.ViewModel
 
         private void AfterFriendSaved(AfterFriendSavedEventArgs obj)
         {
-            var lookupItem = Friends.Single(l => l.Id == obj.Id);
-            lookupItem.DisplayMember = obj.DispalyMember;
+            var lookupItem = Friends.SingleOrDefault(l => l.Id == obj.Id);
+            if(lookupItem == null)
+            {
+                Friends.Add(new NavigationItemViewModel(obj.Id, obj.DispalyMember,
+                    _eventAggregator));
+            }
+            else
+            {
+                lookupItem.DisplayMember = obj.DispalyMember;
+            }
         }
 
         public async Task LoadAsync()
