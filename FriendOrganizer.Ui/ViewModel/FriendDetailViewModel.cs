@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FriendOrganizer.Model;
 using FriendOrganizer.Ui.Data.Repositories;
 using FriendOrganizer.DataAccess;
-using FriendOrganizer.Ui.ViewModel;
+using FriendOrganizer.Ui.Properties;
 using Prism.Events;
 using FriendOrganizer.Ui.Event;
 using System.Windows.Input;
@@ -14,7 +14,7 @@ using Prism.Commands;
 using FriendOrganizer.Ui.Wrapper;
 using FriendOrganizer.Ui.View.Services;
 
-namespace FriendOrganizer.Ui.Data
+namespace FriendOrganizer.Ui.ViewModel
 {
     public class FriendDetailViewModel : ViewModelBase, IFriendDetailViewModel
     {
