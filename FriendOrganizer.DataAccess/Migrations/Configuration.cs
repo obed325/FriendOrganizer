@@ -22,7 +22,17 @@ namespace FriendOrganizer.DataAccess.Migrations
                         new Friend { FirstName = "Quick", LastName = "Dirty", Email = "quickanddirty@fubar.com" },
                         new Friend { FirstName = "Rune-Örjan", LastName = "Örjansson", Email = "runeörjan@fubar.com" }
                 );
-            
+            context.ProgrammingLanguages.AddOrUpdate(
+                pl => pl.Name,
+                    new ProgrammingLanguage { Name = "C#" },
+                    new ProgrammingLanguage { Name = "Java" },
+                    new ProgrammingLanguage { Name = "Ruby" },
+                    new ProgrammingLanguage { Name = "Python" },
+                    new ProgrammingLanguage { Name = "Swift" },
+                    new ProgrammingLanguage { Name = "Visual Basic" }
+                    );
+
+
         }
     }
 }

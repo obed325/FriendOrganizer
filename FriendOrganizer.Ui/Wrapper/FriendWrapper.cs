@@ -11,6 +11,7 @@ namespace FriendOrganizer.Ui.Wrapper
     {
         public FriendWrapper(Friend model) : base(model)
         {
+
         }
 
         public int Id { get { return Model.Id; } }
