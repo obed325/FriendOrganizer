@@ -7,7 +7,8 @@
         xmlns:view="clr-namespace:FriendOrganizer.Ui.View"
         xmlns:viewModel="clr-namespace:FriendOrganizer.Ui.ViewModel"
         mc:Ignorable="d"
-        Title="FriendOrganizer" Height="425" Width="525" FontSize="20">
+        Title="FriendOrganizer" Height="700" Width="1000" FontSize="20" WindowStartupLocation="CenterScreen">
+        
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModel:FriendDetailViewModel}">
             <view:FriendDetailView/>
@@ -31,6 +32,6 @@
             DataContext="{Binding NavigationViewModel}"/>
         <ContentControl Grid.Row="1" 
                                Grid.Column="1" 
-                               Content="{Binding FriendDetailViewModel}"/>
+                               Content="{Binding DetailViewModel}"/>
     </Grid>
 </Window>

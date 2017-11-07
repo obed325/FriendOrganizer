@@ -32,6 +32,11 @@ namespace FriendOrganizer.DataAccess.Migrations
                     new ProgrammingLanguage { Name = "Visual Basic" }
                     );
 
+            context.SaveChanges();
+
+            context.FriendPhoneNumbers.AddOrUpdate(
+                fp => fp.Number,
+                    new FriendPhoneNumber { Number = "031-177000", FriendId = context.Friends.First().Id });
 
         }
     }

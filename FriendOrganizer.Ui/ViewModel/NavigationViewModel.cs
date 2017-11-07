@@ -33,6 +33,7 @@ namespace FriendOrganizer.Ui.ViewModel
             foreach (var item in lookup)
             {
                 Friends.Add(new NavigationItemViewModel(item.Id, item.DisplayMember,
+                    nameof(FriendDetailViewModel),
                     _eventAggregator));
             }
         }
@@ -53,6 +54,7 @@ namespace FriendOrganizer.Ui.ViewModel
             if (lookupItem == null)
             {
                 Friends.Add(new NavigationItemViewModel(obj.Id, obj.DispalyMember,
+                    nameof(FriendDetailViewModel),
                     _eventAggregator));
             }
             else

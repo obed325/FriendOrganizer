@@ -1,10 +1,6 @@
-﻿using System.Threading.Tasks;
-
-namespace FriendOrganizer.Ui.ViewModel
+﻿namespace FriendOrganizer.Ui.ViewModel
 {
-    public interface IFriendDetailViewModel
+    public interface IFriendDetailViewModel:IDetailViewModel
     {
-        Task LoadAsync(int? friendId);
-        bool HasChanges { get; set; }
     }
 }
