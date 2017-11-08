@@ -11,7 +11,6 @@ namespace FriendOrganizer.Ui.Wrapper
     {
         public FriendWrapper(Friend model) : base(model)
         {
-
         }
 
         public int Id { get { return Model.Id; } }
@@ -28,9 +27,15 @@ namespace FriendOrganizer.Ui.Wrapper
             set { SetValue(value); }
         }
 
-        private string Email
+        public string Email
         {
             get { return GetValue<string>(); }
+            set { SetValue(value); }
+        }
+
+        public int? FavoriteLanguageId
+        {
+            get { return GetValue<int>(); }
             set { SetValue(value); }
         }
 

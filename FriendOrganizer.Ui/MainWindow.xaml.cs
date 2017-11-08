@@ -13,7 +13,7 @@ namespace FriendOrganizer.Ui
         {
             InitializeComponent();
             _viewModel = viewModel;
-            DataContext = viewModel;
+            DataContext = _viewModel;
             Loaded += MainWindow_Loaded;
         }
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)

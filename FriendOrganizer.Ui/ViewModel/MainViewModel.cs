@@ -1,4 +1,5 @@
-﻿using FriendOrganizer.Model;
+﻿using Autofac.Features.Indexed;
+using FriendOrganizer.Model;
 using FriendOrganizer.Ui.Data;
 using FriendOrganizer.Ui.Event;
 using FriendOrganizer.Ui.View.Services;
@@ -14,25 +15,25 @@ namespace FriendOrganizer.Ui.ViewModel
     public class MainViewModel: ViewModelBase
     {
         private IEventAggregator _eventAggregator;
-        private Func<IFriendDetailViewModel> _friendDetailViewModelCreator;
         private IDetailViewModel _detailViewModel;
         private IMessageDialogService _messageDialogService;
+        private IIndex<string, IDetailViewModel> _detailViewModelCreator;
 
         public MainViewModel(INavigationViewModel navigationViewModel,
-            Func<IFriendDetailViewModel> friendDetailViewModelCreator,
+            IIndex<string, IDetailViewModel> detailViewModelCreator,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService)
         {
             _eventAggregator = eventAggregator;
-            _friendDetailViewModelCreator = friendDetailViewModelCreator;
-            _messageDialogService = messageDialogService;//fråga
+            _detailViewModelCreator = detailViewModelCreator;
+            _messageDialogService = messageDialogService;//varför fält till dessa
 
             _eventAggregator.GetEvent<OpenDetailViewEvent>()
                 .Subscribe(OnOpenDetailView);
             _eventAggregator.GetEvent<AfterDetailDeletedEvent>()
                 .Subscribe(AfterDetailDeleted);
 
-            CreateNewFriendCommand = new DelegateCommand(OnCreateNewFriendExecute);
+            CreateNewDetailCommand = new DelegateCommand<Type>(OnCreateNewDetailExecute);
 
             NavigationViewModel = navigationViewModel;
         }
@@ -42,7 +43,7 @@ namespace FriendOrganizer.Ui.ViewModel
             await NavigationViewModel.LoadAsync();
         }
 
-        public ICommand CreateNewFriendCommand { get; }
+        public ICommand CreateNewDetailCommand { get; }
 
         public INavigationViewModel NavigationViewModel { get; }
 
@@ -67,19 +68,15 @@ namespace FriendOrganizer.Ui.ViewModel
                     return;
                 }
             }
-            switch (args.ViewModelName)
-            {
-                case nameof(FriendDetailViewModel):
-                DetailViewModel = _friendDetailViewModelCreator();
-                break;
-            }
-            
+         
+            DetailViewModel = _detailViewModelCreator[args.ViewModelName];
             await DetailViewModel.LoadAsync(args.Id);
         }
 
-        private void OnCreateNewFriendExecute()
+        private void OnCreateNewDetailExecute(Type viewModelType)
         {
-            OnOpenDetailView(null);
+            OnOpenDetailView(
+                new OpenDetailViewEventArgs { ViewModelName = viewModelType.Name});
         }
 
         private void AfterDetailDeleted(AfterDetailDeletedEventArgs args)
