@@ -16,6 +16,7 @@ using FriendOrganizer.Ui.View.Services;
 using FriendOrganizer.Ui.Data.Lookups;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using FriendOrganizer.UI.Event;
 
 namespace FriendOrganizer.Ui.ViewModel
 {
@@ -33,14 +34,24 @@ namespace FriendOrganizer.Ui.ViewModel
             :base(eventAggregator, messageDialogService)
         {
             _friendRepository = friendRepository;
-           
             _programmingLanguageLookupDataService = programmingLanguageLookupDataService;
+
+            eventAggregator.GetEvent<AfterCollectionSavedEvent>()
+                .Subscribe(AfterCollectionSaved);
 
             AddPhoneNumberCommand = new DelegateCommand(OnAddPhoneNumberExecute);
             RemovePhoneNumberCommand = new DelegateCommand(OnRemovePhoneNumberExecute, OnRemovePhoneNumberCanExecute);
 
             ProgrammingLanguage = new ObservableCollection<LookupItem>();
             PhoneNumbers = new ObservableCollection<FriendPhoneNumberWrapper>();
+        }
+
+        private async void AfterCollectionSaved(AfterCollectionSavedEventArgs args)
+        {
+            if (args.ViewModelName == nameof(ProgrammingLanguageDetailViewModel))
+            {
+                await LoadProgrammingLanguagesLookupAsync();
+            }
         }
 
         public override async Task LoadAsync(int friendId)

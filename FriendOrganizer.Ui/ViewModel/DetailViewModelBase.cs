@@ -6,10 +6,11 @@ using Prism.Events;
 using Prism.Commands;
 using System;
 using FriendOrganizer.Ui.View.Services;
+using FriendOrganizer.UI.Event;
 
 namespace FriendOrganizer.Ui.ViewModel
 {
-    public abstract class DetailViewModelBase:ViewModelBase, IDetailViewModel
+    public abstract class DetailViewModelBase : ViewModelBase, IDetailViewModel
     {
         private bool _hasChanges;
         protected readonly IEventAggregator EventAggregator;
@@ -18,7 +19,7 @@ namespace FriendOrganizer.Ui.ViewModel
         private string _title;
 
         public DetailViewModelBase(IEventAggregator eventAggregator,
-            IMessageDialogService messageDialogService)
+          IMessageDialogService messageDialogService)
         {
             EventAggregator = eventAggregator;
             MessageDialogService = messageDialogService;
@@ -44,7 +45,7 @@ namespace FriendOrganizer.Ui.ViewModel
         public string Title
         {
             get { return _title; }
-             protected set
+            protected set
             {
                 _title = value;
                 OnPropertyChanged();
@@ -56,7 +57,7 @@ namespace FriendOrganizer.Ui.ViewModel
             get { return _hasChanges; }
             set
             {
-                if(_hasChanges != value)
+                if (_hasChanges != value)
                 {
                     _hasChanges = value;
                     OnPropertyChanged();
@@ -74,40 +75,51 @@ namespace FriendOrganizer.Ui.ViewModel
         protected virtual void RaiseDetailDeletedEvent(int modelId)
         {
             EventAggregator.GetEvent<AfterDetailDeletedEvent>().Publish(new
-                AfterDetailDeletedEventArgs
+             AfterDetailDeletedEventArgs
             {
                 Id = modelId,
                 ViewModelName = this.GetType().Name
             });
         }
 
-        protected virtual void RaiseDetailSavedEvent(int modelId,string displayMember)
+        protected virtual void RaiseDetailSavedEvent(int modelId, string displayMember)
         {
             EventAggregator.GetEvent<AfterDetailSavedEvent>().Publish(new AfterDetailSavedEventArgs
             {
                 Id = modelId,
-                DispalyMember = displayMember,
+                DisplayMember = displayMember,
                 ViewModelName = this.GetType().Name
             });
         }
+
+        protected virtual void RaiseCollectionSavedEvent()
+        {
+            EventAggregator.GetEvent<AfterCollectionSavedEvent>()
+              .Publish(new AfterCollectionSavedEventArgs
+              {
+                  ViewModelName = this.GetType().Name
+              });
+        }
+
+
         protected virtual void OnCloseDetailViewExecute()
         {
             if (HasChanges)
             {
                 var result = MessageDialogService.ShowOkCancelDialog(
-                    "You've made changes. Close this item?", "Question");
-                if(result == MessageDialogResult.Cancel)
+                  "You've made changes. Close this item?", "Question");
+                if (result == MessageDialogResult.Cancel)
                 {
                     return;
                 }
             }
+
             EventAggregator.GetEvent<AfterDetailClosedEvent>()
-                .Publish(new AfterDetailClosedEventArgs
-                {
-                    Id = this.Id,
-                    ViewModelName = this.GetType().Name
-                });
+              .Publish(new AfterDetailClosedEventArgs
+              {
+                  Id = this.Id,
+                  ViewModelName = this.GetType().Name
+              });
         }
-      
     }
 }

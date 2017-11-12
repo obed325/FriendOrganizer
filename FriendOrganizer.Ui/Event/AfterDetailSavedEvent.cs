@@ -12,7 +12,7 @@ namespace FriendOrganizer.Ui.Event
     public class AfterDetailSavedEventArgs
     {
         public int Id { get; set; }
-        public string DispalyMember { get; set; }
+        public string DisplayMember { get; set; }
         public string ViewModelName { get; set; }
     }
 }

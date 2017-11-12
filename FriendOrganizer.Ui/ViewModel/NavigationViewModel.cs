@@ -15,17 +15,17 @@ namespace FriendOrganizer.Ui.ViewModel
     public class NavigationViewModel : ViewModelBase, INavigationViewModel
     {
         private IFriendLookupDataService _friendLookupService;
-        private IMeetingLookupDataService _meetingLookupService;
         private IEventAggregator _eventAggregator;
+        private IMeetingLookupDataService _meetingLookupService;
 
         public NavigationViewModel(IFriendLookupDataService friendLookupService,
-            IMeetingLookupDataService meetingLookupService,
-            IEventAggregator eventAggregator)
+          IMeetingLookupDataService meetingLookupService,
+          IEventAggregator eventAggregator)
         {
             _friendLookupService = friendLookupService;
             _meetingLookupService = meetingLookupService;
             _eventAggregator = eventAggregator;
-            Friends = new ObservableCollection<NavigationItemViewModel >();
+            Friends = new ObservableCollection<NavigationItemViewModel>();
             Meetings = new ObservableCollection<NavigationItemViewModel>();
             _eventAggregator.GetEvent<AfterDetailSavedEvent>().Subscribe(AfterDetailSaved);
             _eventAggregator.GetEvent<AfterDetailDeletedEvent>().Subscribe(AfterDetailDeleted);
@@ -90,19 +90,19 @@ namespace FriendOrganizer.Ui.ViewModel
             }
         }
 
-        private void AfterDetailSaved(ObservableCollection<NavigationItemViewModel> items,
+            private void AfterDetailSaved(ObservableCollection<NavigationItemViewModel> items,
             AfterDetailSavedEventArgs args)
         {
             var lookupItem = items.SingleOrDefault(l => l.Id == args.Id);
             if (lookupItem == null)
             {
-                items.Add(new NavigationItemViewModel(args.Id, args.DispalyMember,
+                items.Add(new NavigationItemViewModel(args.Id, args.DisplayMember,
                     args.ViewModelName,
                     _eventAggregator));
             }
             else
             {
-                lookupItem.DisplayMember = args.DispalyMember;
+                lookupItem.DisplayMember = args.DisplayMember;
             }
         }
     }
