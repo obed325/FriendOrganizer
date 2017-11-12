@@ -100,18 +100,18 @@ namespace FriendOrganizer.Ui.ViewModel
                 HasChanges = _programmingLanguageRepository.HasChanges();
                 RaiseCollectionSavedEvent();
             }
-
             catch (Exception ex)
             {
                 while (ex.InnerException != null)
                 {
                     ex = ex.InnerException;
                 }
-                MessageDialogService.ShowInfoDialog("Error while saving enteties, " +
-                    "the data will be reloaded. Details: " + ex.Message);
+                await MessageDialogService.ShowInfoDialogAsync("Error while saving the entities, " +
+                  "the data will be reloaded. Details: " + ex.Message);
                 await LoadAsync(Id);
             }
         }
+
         private void OnAddExecute()
         {
             var wrapper = new ProgrammingLanguageWrapper(new ProgrammingLanguage());
@@ -119,18 +119,18 @@ namespace FriendOrganizer.Ui.ViewModel
             _programmingLanguageRepository.Add(wrapper.Model);
             ProgrammingLanguages.Add(wrapper);
 
-            //trigger validitation
+            // Trigger the validation
             wrapper.Name = "";
         }
-        
+
         private async void OnRemoveExecute()
         {
             var isReferenced =
-        await _programmingLanguageRepository.IsReferencedByFriendAsync(
-          SelectedProgrammingLanguage.Id);
+              await _programmingLanguageRepository.IsReferencedByFriendAsync(
+                SelectedProgrammingLanguage.Id);
             if (isReferenced)
             {
-                MessageDialogService.ShowInfoDialog($"The language {SelectedProgrammingLanguage.Name}" +
+                await MessageDialogService.ShowInfoDialogAsync($"The language {SelectedProgrammingLanguage.Name}" +
                   $" can't be removed, as it is referenced by at least one friend");
                 return;
             }
@@ -147,5 +147,6 @@ namespace FriendOrganizer.Ui.ViewModel
         {
             return SelectedProgrammingLanguage != null;
         }
+
     }
 }

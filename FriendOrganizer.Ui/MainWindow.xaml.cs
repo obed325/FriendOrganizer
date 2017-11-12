@@ -1,11 +1,12 @@
 ﻿using FriendOrganizer.Ui.ViewModel;
+using MahApps.Metro.Controls;
 using System.Windows;
 
 
 namespace FriendOrganizer.Ui
 {
 
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         private MainViewModel _viewModel;
 
