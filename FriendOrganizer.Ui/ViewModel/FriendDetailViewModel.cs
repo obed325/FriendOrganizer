@@ -23,19 +23,17 @@ namespace FriendOrganizer.Ui.ViewModel
     {
         private IFriendRepository _friendRepository;
         private FriendWrapper _friend;
-        private FriendPhoneNumberWrapper _selectedPhoneNumber;
-        private bool _hasChanges;
-        private IMessageDialogService _messageDialogService;
+        private FriendPhoneNumberWrapper _selectedPhoneNumber;      
         private IProgrammingLanguageLookupDataService _programmingLanguageLookupDataService;
 
         public FriendDetailViewModel(IFriendRepository friendRepository,
             IEventAggregator eventAggregator, 
             IMessageDialogService messageDialogService,
             IProgrammingLanguageLookupDataService programmingLanguageLookupDataService)
-            :base(eventAggregator)
+            :base(eventAggregator, messageDialogService)
         {
             _friendRepository = friendRepository;
-            _messageDialogService = messageDialogService;//field
+           
             _programmingLanguageLookupDataService = programmingLanguageLookupDataService;
 
             AddPhoneNumberCommand = new DelegateCommand(OnAddPhoneNumberExecute);
@@ -50,6 +48,9 @@ namespace FriendOrganizer.Ui.ViewModel
             var friend = friendId.HasValue
                 ? await _friendRepository.GetByIdAsync(friendId.Value)
                 : CreateNewFriend();
+
+            Id = friend.Id;
+
             InitializeFriend(friend);
 
             InitializeFriendPhoneNumbers(friend.PhoneNumbers);
@@ -70,6 +71,11 @@ namespace FriendOrganizer.Ui.ViewModel
                 {
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
+                if (e.PropertyName == nameof(Friend.FirstName)
+                || e.PropertyName == nameof(Friend.LastName))
+                {
+                    SetTitle();
+                }
             };
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             if (Friend.Id == 0)
@@ -77,6 +83,12 @@ namespace FriendOrganizer.Ui.ViewModel
                 //Little trick to trigger validation
                 Friend.FirstName = "";
             }
+            SetTitle();
+        }
+
+        private void SetTitle()
+        {
+            Title = $"{Friend.FirstName} {Friend.LastName}";
         }
 
         private void InitializeFriendPhoneNumbers(ICollection<FriendPhoneNumber> phoneNumbers)
@@ -149,6 +161,7 @@ namespace FriendOrganizer.Ui.ViewModel
         {
             await _friendRepository.SaveAsync();
             HasChanges = _friendRepository.HasChanges();
+            Id = Friend.Id;
             RaiseDetailSavedEvent(Friend.Id, $"{Friend.FirstName} {Friend.LastName}");
         }
 
@@ -162,7 +175,13 @@ namespace FriendOrganizer.Ui.ViewModel
 
         protected override async void OnDeleteExecute()
         {
-            var result = _messageDialogService.ShowOkCancelDialog($"Do you really want to delete the friend {Friend.FirstName} {Friend.LastName}?",
+            if (await _friendRepository.HasMeetingsAsync(Friend.Id))
+            {
+                MessageDialogService.ShowInfoDialog($"{Friend.FirstName} {Friend.LastName} can't be deleted as this is part of meeting");
+                return;
+            }
+
+            var result = MessageDialogService.ShowOkCancelDialog($"Do you really want to delete the friend {Friend.FirstName} {Friend.LastName}?",
                 "Question");
             if (result == MessageDialogResult.OK)
             {

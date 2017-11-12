@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace FriendOrganizer.Ui.Wrapper
@@ -24,7 +25,10 @@ namespace FriendOrganizer.Ui.Wrapper
 
         protected virtual TValue GetValue<TValue>([CallerMemberName]string propertyName = null)
         {
-            return (TValue)typeof(T).GetProperty(propertyName).GetValue(Model);
+            Type modelType = typeof(T);
+            PropertyInfo propertyInfo = modelType.GetProperty(propertyName);
+            TValue value = (TValue)propertyInfo.GetValue(Model);
+            return value;
         }
 
         private void ValidatePropertyInternal(string propertyName, object currentValue)

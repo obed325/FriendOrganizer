@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace FriendOrganizer.Ui.Data.Repositories
 {
-    public class FriendRepository : GenericRepository<Friend,FriendOrganizerDbContext>,
+    public class FriendRepository : GenericRepository<Friend,FriendOrganizerDbContext>, 
                                     IFriendRepository
+
     {
         public FriendRepository(FriendOrganizerDbContext context)
             :base(context)
@@ -23,6 +24,18 @@ namespace FriendOrganizer.Ui.Data.Repositories
                     .Include(f=>f.PhoneNumbers)
                     .SingleAsync(f=> f.Id == friendId);
             }
+        }
+
+        public async Task<bool> HasMeetingAsync(int friendId)
+        {
+            return await Context.Meetings.AsNoTracking()
+                .Include(m => m.Friends)
+                .AnyAsync(m => m.Friends.Any(f => f.Id == friendId));
+        }
+
+        public Task<bool> HasMeetingsAsync(int friendId)
+        {
+            throw new NotImplementedException();
         }
 
         public void RemovePhoneNumber(FriendPhoneNumber model)
