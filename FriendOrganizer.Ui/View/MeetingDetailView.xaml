@@ -7,7 +7,7 @@
              xmlns:model="clr-namespace:FriendOrganizer.Model;assembly=FriendOrganizer.Model"
              xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="400" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -17,6 +17,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Label Content="Title" Margin="10 10 10 0"/>
@@ -53,11 +54,19 @@
                 <Button Content="&gt;&gt;" Margin="10 0 10 10" Command="{Binding RemoveFriendCommand}"/>
             </StackPanel>
 
+           
+
             <Label Content="Available Friends" Grid.Column="2"/>
             <ListView Grid.Row="1" ItemsSource="{Binding AvailableFriends}"
                       SelectedItem="{Binding SelectedAvailableFriend}" Grid.Column="2"/>
         </Grid>
-        <StackPanel Grid.Row="7" Orientation="Horizontal">
+        
+        <StackPanel Grid.Row="7">
+            <Label Content="Weather"/>
+            <Label Content="{Binding Weather.weather_state_name }"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="8" Orientation="Horizontal">
             <Button Content="Save" Width="75" Margin="10" Command="{Binding SaveCommand}"/>
             <Button Content="Delete" Width="75" Margin="10" Command="{Binding DeleteCommand}"/>
         </StackPanel>

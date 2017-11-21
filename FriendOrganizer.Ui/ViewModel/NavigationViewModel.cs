@@ -33,7 +33,10 @@ namespace FriendOrganizer.Ui.ViewModel
 
         public async Task LoadAsync()
         {
-            var lookup = await _friendLookupService.GetFriendLookupAsync();
+            IEnumerable<LookupItem> lookup = null;  //ändrad för att ladda grafiken innan api-anrop
+            await System.Threading.Tasks.Task.Run(async () =>
+            lookup = await _friendLookupService.GetFriendLookupAsync());
+
             Friends.Clear();
             foreach (var item in lookup)
             {

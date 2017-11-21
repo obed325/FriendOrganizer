@@ -14,6 +14,7 @@ namespace FriendOrganizer.Ui.Data.Repositories
         {
             this.Context = context;
         }
+
         public void Add(TEntity model)
         {
             Context.Set<TEntity>().Add(model);

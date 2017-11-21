@@ -23,6 +23,7 @@ namespace FriendOrganizer.Ui.ViewModel
 {
     public class FriendDetailViewModel : DetailViewModelBase, IFriendDetailViewModel
     {
+
         private IFriendRepository _friendRepository;
         private FriendWrapper _friend;
         private FriendPhoneNumberWrapper _selectedPhoneNumber;
@@ -133,6 +134,7 @@ namespace FriendOrganizer.Ui.ViewModel
                 ProgrammingLanguages.Add(lookupItem);
             }
         }
+
 
         public FriendWrapper Friend
         {

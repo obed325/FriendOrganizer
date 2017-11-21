@@ -17,6 +17,8 @@ namespace FriendOrganizer.Ui.ViewModel
 {
     public class MeetingDetailViewModel : DetailViewModelBase, IMeetingDetailViewModel
     {
+        private WeatherWrapper _weather;
+
         private IMeetingRepository _meetingRepository;
         private MeetingWrapper _meeting;
         private Friend _selectedAvailableFriend;
@@ -35,6 +37,12 @@ namespace FriendOrganizer.Ui.ViewModel
             AvailableFriends = new ObservableCollection<Friend>();
             AddFriendCommand = new DelegateCommand(OnAddFriendExecute, OnAddFriendCanExecute);
             RemoveFriendCommand = new DelegateCommand(OnRemoveFriendExecute, OnRemoveFriendCanExecute);
+        }
+
+        public WeatherWrapper Weather
+        {
+            get { return _weather; }
+            private set { _weather = value; }
         }
 
         public MeetingWrapper Meeting
