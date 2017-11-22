@@ -9,19 +9,24 @@ using System.Threading.Tasks;
 
 namespace FriendOrganizer.Ui.Data.Finder
 {
-    class WeatherReader
+    static class WeatherReader
     {
-        public WeatherReader()
+        static WeatherReader()
         {
                 httpClient.BaseAddress = new Uri("https://www.metaweather.com/api/");
 
                 httpClient.DefaultRequestHeaders.Accept.Clear();
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+
         }
 
         static HttpClient httpClient = new HttpClient();
 
-       
+        const string ImageUrlFormat = "https://www.metaweather.com/static/img/weather/png/64/{0}.png";
+
+
+
 
 
             //Weather weather = await GetWeatherAsync("location/890869/");
@@ -34,23 +39,28 @@ namespace FriendOrganizer.Ui.Data.Finder
             //Console.ReadKey();
 
 
-        public async Task<Weather> GetWeatherAsync(string path)
+        public static async Task<ConsolidatedWeather> GetWeatherAsync(DateTime dateTime)
         {
-            Weather product = null;
+            string path = $"location/890869/{dateTime.Year}/{dateTime.Month}/{dateTime.Day}/";
+            ConsolidatedWeather weather = new ConsolidatedWeather();
             HttpResponseMessage response = await httpClient.GetAsync(path);
 
             if (response.IsSuccessStatusCode)
             {
                 try
                 {
-                    product = await response.Content.ReadAsAsync<Weather>();
+                    weather = await response.Content.ReadAsAsync<ConsolidatedWeather>();
+                    if (weather != null)
+                    {
+                        weather.ImageUrl = string.Format(ImageUrlFormat, weather.weather_state_abbr);
+                    }
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                 }
             }
-            return product;
+            return weather;
         }
     }
 }

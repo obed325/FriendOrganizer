@@ -12,6 +12,7 @@ using Prism.Events;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using FriendOrganizer.Ui.Event;
+using FriendOrganizer.Ui.Data.Finder;
 
 namespace FriendOrganizer.Ui.ViewModel
 {
@@ -42,7 +43,11 @@ namespace FriendOrganizer.Ui.ViewModel
         public WeatherWrapper Weather
         {
             get { return _weather; }
-            private set { _weather = value; }
+            private set
+            {
+                _weather = value;
+                OnPropertyChanged();
+            }
         }
 
         public MeetingWrapper Meeting
@@ -98,6 +103,15 @@ namespace FriendOrganizer.Ui.ViewModel
             _allFriends = await _meetingRepository.GetAllFriendsAsync();
 
             SetupPicklist();
+
+            await RefreshWeather();
+        }
+
+        private async Task RefreshWeather()
+        {
+            var weather = await WeatherReader.GetWeatherAsync(Meeting.DateFrom);
+
+            Weather = new WeatherWrapper(weather);
         }
 
         protected async override void OnDeleteExecute()
@@ -156,7 +170,7 @@ namespace FriendOrganizer.Ui.ViewModel
         private void InitializeMeeting(Meeting meeting)
         {
             Meeting = new MeetingWrapper(meeting);
-            Meeting.PropertyChanged += (s, e) =>
+            Meeting.PropertyChanged += async(s, e) =>
             {
                 if (!HasChanges)
                 {
@@ -170,6 +184,10 @@ namespace FriendOrganizer.Ui.ViewModel
                 if (e.PropertyName == nameof(Meeting.Title))
                 {
                     SetTitle();
+                }
+                if (e.PropertyName == nameof(Meeting.DateFrom))
+                {
+                    await RefreshWeather();
                 }
             };
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();

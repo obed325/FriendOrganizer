@@ -64,6 +64,7 @@
         <StackPanel Grid.Row="7">
             <Label Content="Weather"/>
             <Label Content="{Binding Weather.weather_state_name }"/>
+            <Image Source="{Binding Weather.ImageUrl}"/>
         </StackPanel>
 
         <StackPanel Grid.Row="8" Orientation="Horizontal">

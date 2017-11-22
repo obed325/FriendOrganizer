@@ -24,6 +24,7 @@ namespace FriendOrganizer.Ui.Data.FinderFriendOrganizer.Ui.Data.Finder
         public int humidity { get; set; }
         public double? visibility { get; set; }
         public int predictability { get; set; }
+        public string ImageUrl { get; set; }
     }
 
     public class Parent
