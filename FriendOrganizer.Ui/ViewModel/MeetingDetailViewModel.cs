@@ -111,7 +111,7 @@ namespace FriendOrganizer.Ui.ViewModel
         {
             var weather = await WeatherReader.GetWeatherAsync(Meeting.DateFrom);
 
-            tWeather = new WeatherWrapper(weather);
+            Weather = new WeatherWrapper(weather);
         }
 
         protected async override void OnDeleteExecute()
