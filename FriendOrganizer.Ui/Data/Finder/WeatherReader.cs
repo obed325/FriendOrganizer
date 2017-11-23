@@ -13,10 +13,10 @@ namespace FriendOrganizer.Ui.Data.Finder
     {
         static WeatherReader()
         {
-                httpClient.BaseAddress = new Uri("https://www.metaweather.com/api/");
+            httpClient.BaseAddress = new Uri("https://www.metaweather.com/api/");
 
-                httpClient.DefaultRequestHeaders.Accept.Clear();
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 
         }
@@ -29,38 +29,44 @@ namespace FriendOrganizer.Ui.Data.Finder
 
 
 
-            //Weather weather = await GetWeatherAsync("location/890869/");
-            //Console.WriteLine(weather.title); //Where
-            //Console.WriteLine(weather.location_type);
-            //Console.WriteLine(weather.time);
-            //Console.WriteLine("Windspeed " + (Math.Round(weather.consolidated_weather[0].wind_speed, 2)));
-            //Console.WriteLine("Temp " + (weather.consolidated_weather[0].the_temp));
-            //Console.WriteLine(weather.consolidated_weather[0].weather_state_name);
-            //Console.ReadKey();
+        //Weather weather = await GetWeatherAsync("location/890869/");
+        //Console.WriteLine(weather.title); //Where
+        //Console.WriteLine(weather.location_type);
+        //Console.WriteLine(weather.time);
+        //Console.WriteLine("Windspeed " + (Math.Round(weather.consolidated_weather[0].wind_speed, 2)));
+        //Console.WriteLine("Temp " + (weather.consolidated_weather[0].the_temp));
+        //Console.WriteLine(weather.consolidated_weather[0].weather_state_name);
+        //Console.ReadKey();
 
 
         public static async Task<ConsolidatedWeather> GetWeatherAsync(DateTime dateTime)
         {
             string path = $"location/890869/{dateTime.Year}/{dateTime.Month}/{dateTime.Day}/";
-            ConsolidatedWeather weather = new ConsolidatedWeather();
-            HttpResponseMessage response = await httpClient.GetAsync(path);
+            List<ConsolidatedWeather> weather = null;
 
-            if (response.IsSuccessStatusCode)
+            try
             {
-                try
+                //ConsolidatedWeather _w = 
+                HttpResponseMessage response = await httpClient.GetAsync(path);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    weather = await response.Content.ReadAsAsync<ConsolidatedWeather>();
+
+                    weather = await response.Content.ReadAsAsync<List<ConsolidatedWeather>>();
                     if (weather != null)
                     {
-                        weather.ImageUrl = string.Format(ImageUrlFormat, weather.weather_state_abbr);
+                        weather[0].ImageUrl = string.Format(ImageUrlFormat, weather[0].weather_state_abbr);
                     }
+                    
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
+                return weather[0];
             }
-            return weather;
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+            
         }
     }
 }
