@@ -54,17 +54,18 @@
                 <Button Content="&gt;&gt;" Margin="10 0 10 10" Command="{Binding RemoveFriendCommand}"/>
             </StackPanel>
 
-           
+
 
             <Label Content="Available Friends" Grid.Column="2"/>
             <ListView Grid.Row="1" ItemsSource="{Binding AvailableFriends}"
                       SelectedItem="{Binding SelectedAvailableFriend}" Grid.Column="2"/>
         </Grid>
-        
+
         <StackPanel Grid.Row="7">
-            <Label Content="Weather"/>
-            <Label Content="{Binding Weather.weather_state_name }"/>
-            <Image Source="{Binding Weather.ImageUrl}"/>
+            <!--<Label Content="Weather"/>-->
+            <!--<Label Content="Weather"/>-->
+            <Image Source="{Binding Weather.ImageUrl}" Height="64" HorizontalAlignment="Left" Margin="10 0"/>
+            <Label Content="{Binding Weather.weather_state_name}"/>
         </StackPanel>
 
         <StackPanel Grid.Row="8" Orientation="Horizontal">

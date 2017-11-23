@@ -37,8 +37,13 @@ namespace FriendOrganizer.Ui.Wrapper
             set { SetValue(value); }
         }
 
+        public string ImageUrl
+        {
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
+        }
 
-       
+
     }
 }
 
