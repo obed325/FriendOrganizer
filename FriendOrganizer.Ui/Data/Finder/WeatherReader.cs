@@ -42,27 +42,39 @@ namespace FriendOrganizer.Ui.Data.Finder
         public static async Task<ConsolidatedWeather> GetWeatherAsync(DateTime dateTime)
         {
             string path = $"location/890869/{dateTime.Year}/{dateTime.Month}/{dateTime.Day}/";
-            List<ConsolidatedWeather> weather = null;
+            
 
             try
             {
+                List<ConsolidatedWeather> weather = null;
                 //ConsolidatedWeather _w = 
                 HttpResponseMessage response = await httpClient.GetAsync(path);
 
+               
+
                 if (response.IsSuccessStatusCode)
                 {
-
                     weather = await response.Content.ReadAsAsync<List<ConsolidatedWeather>>();
+                    if (weather == null)
+                    {
+                        //weather.Clear();
+                        weather[0].weather_state_name = "No forecast"; weather[0].ImageUrl = "";
+                        //return weather[0];
+                    }
                     if (weather != null)
                     {
                         weather[0].ImageUrl = string.Format(ImageUrlFormat, weather[0].weather_state_abbr);
                     }
                     
                 }
+
                 return weather[0];
+                
             }
             catch (Exception e)
             {
+               
+
                 Console.WriteLine(e.Message);
                 return null;
             }

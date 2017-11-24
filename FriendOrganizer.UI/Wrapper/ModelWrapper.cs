@@ -26,7 +26,7 @@ namespace FriendOrganizer.Ui.Wrapper
         protected virtual TValue GetValue<TValue>([CallerMemberName]string propertyName = null)
         {
             Type modelType = typeof(T);
-            PropertyInfo propertyInfo = modelType.GetProperty(propertyName);
+            PropertyInfo propertyInfo = modelType.GetProperty(propertyName);////
             TValue value = (TValue)propertyInfo.GetValue(Model);
             return value;
         }

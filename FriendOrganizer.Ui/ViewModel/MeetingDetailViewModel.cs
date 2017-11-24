@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using FriendOrganizer.Ui.Event;
 using FriendOrganizer.Ui.Data.Finder;
+using System.Net.Http;
 
 namespace FriendOrganizer.Ui.ViewModel
 {
@@ -109,9 +110,18 @@ namespace FriendOrganizer.Ui.ViewModel
 
         private async Task RefreshWeather()
         {
-            var weather = await WeatherReader.GetWeatherAsync(Meeting.DateFrom);
-
-            Weather = new WeatherWrapper(weather);
+            if (DateTime.Now.AddDays(6) >= Meeting.DateFrom)
+            {
+                var weather = await WeatherReader.GetWeatherAsync(Meeting.DateFrom);
+                if(weather != null)
+                {
+                    Weather = new WeatherWrapper(weather);
+                }
+            }
+            else
+            {
+                Weather = null;
+            }
         }
 
         protected async override void OnDeleteExecute()
